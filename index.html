@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Captain's Cup</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Inter:wght@300;400;600&display=swap');
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --gold: #c9a84c;
+    --gold-light: #e8c96a;
+    --dark: #0a0f0d;
+    --green: #1a3a2a;
+    --green-mid: #22503a;
+    --cream: #f5efe0;
+    --text: #d4c9a8;
+  }
+
+  body {
+    background: var(--dark);
+    color: var(--text);
+    font-family: 'Inter', sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* HERO */
+  .hero {
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 2rem;
+    background: radial-gradient(ellipse at 50% 0%, #1a4a2e 0%, #0a1a12 50%, var(--dark) 100%);
+    overflow: hidden;
+  }
+
+  .hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: repeating-linear-gradient(
+      0deg, transparent, transparent 60px,
+      rgba(201,168,76,0.03) 60px, rgba(201,168,76,0.03) 61px
+    ),
+    repeating-linear-gradient(
+      90deg, transparent, transparent 60px,
+      rgba(201,168,76,0.03) 60px, rgba(201,168,76,0.03) 61px
+    );
+  }
+
+  .trophy-icon {
+    font-size: 5rem;
+    margin-bottom: 1rem;
+    filter: drop-shadow(0 0 30px rgba(201,168,76,0.6));
+    animation: float 3s ease-in-out infinite;
+  }
+
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-12px); }
+  }
+
+  .hero-eyebrow {
+    font-size: 0.75rem;
+    letter-spacing: 0.4em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 1rem;
+  }
+
+  .hero-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(3rem, 10vw, 7rem);
+    font-weight: 900;
+    color: var(--cream);
+    line-height: 1;
+    text-shadow: 0 0 60px rgba(201,168,76,0.3);
+  }
+
+  .hero-title span { color: var(--gold); }
+
+  .hero-subtitle {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.2rem, 3vw, 1.8rem);
+    color: var(--gold-light);
+    margin-top: 0.5rem;
+    letter-spacing: 0.1em;
+    font-style: italic;
+  }
+
+  .divider {
+    width: 120px;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--gold), transparent);
+    margin: 2rem auto;
+  }
+
+  .hero-details {
+    display: flex;
+    gap: 3rem;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-top: 1rem;
+  }
+
+  .detail-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.25rem;
+  }
+
+  .detail-label {
+    font-size: 0.65rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--gold);
+    opacity: 0.8;
+  }
+
+  .detail-value {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--cream);
+  }
+
+  .scroll-hint {
+    position: absolute;
+    bottom: 2rem;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    opacity: 0.5;
+    font-size: 0.7rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    animation: bounce 2s ease-in-out infinite;
+  }
+
+  @keyframes bounce {
+    0%, 100% { transform: translateX(-50%) translateY(0); }
+    50% { transform: translateX(-50%) translateY(6px); }
+  }
+
+  /* SECTIONS */
+  section {
+    padding: 5rem 1.5rem;
+    max-width: 1000px;
+    margin: 0 auto;
+  }
+
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.2rem;
+    color: var(--cream);
+    text-align: center;
+    margin-bottom: 0.5rem;
+  }
+
+  .section-title span { color: var(--gold); }
+
+  .section-sub {
+    text-align: center;
+    font-size: 0.8rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--gold);
+    opacity: 0.7;
+    margin-bottom: 3rem;
+  }
+
+  /* FORMAT */
+  .rounds-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 1.5rem;
+  }
+
+  .round-card {
+    background: linear-gradient(135deg, rgba(26,58,42,0.6), rgba(10,15,13,0.8));
+    border: 1px solid rgba(201,168,76,0.2);
+    border-radius: 12px;
+    padding: 2rem;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.3s, border-color 0.3s;
+  }
+
+  .round-card:hover {
+    transform: translateY(-4px);
+    border-color: rgba(201,168,76,0.5);
+  }
+
+  .round-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, transparent, var(--gold), transparent);
+  }
+
+  .round-num {
+    font-size: 0.7rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 0.5rem;
+  }
+
+  .round-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.4rem;
+    color: var(--cream);
+    margin-bottom: 0.5rem;
+  }
+
+  .round-holes {
+    font-size: 0.85rem;
+    color: var(--text);
+    opacity: 0.7;
+    margin-bottom: 1rem;
+  }
+
+  .tbd-badge {
+    display: inline-block;
+    background: rgba(201,168,76,0.15);
+    border: 1px solid rgba(201,168,76,0.3);
+    color: var(--gold);
+    font-size: 0.7rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    padding: 0.3rem 0.8rem;
+    border-radius: 20px;
+  }
+
+  /* TEAMS */
+  .teams-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+  }
+
+  @media (max-width: 600px) {
+    .teams-container { grid-template-columns: 1fr; }
+  }
+
+  .team-card {
+    background: linear-gradient(135deg, rgba(26,58,42,0.4), rgba(10,15,13,0.7));
+    border: 1px solid rgba(201,168,76,0.15);
+    border-radius: 16px;
+    overflow: hidden;
+  }
+
+  .team-header {
+    background: linear-gradient(135deg, rgba(201,168,76,0.2), rgba(201,168,76,0.05));
+    padding: 1.5rem;
+    text-align: center;
+    border-bottom: 1px solid rgba(201,168,76,0.15);
+  }
+
+  .team-label {
+    font-size: 0.65rem;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    color: var(--gold);
+    opacity: 0.8;
+    margin-bottom: 0.25rem;
+  }
+
+  .team-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.5rem;
+    color: var(--cream);
+  }
+
+  .team-captain {
+    font-size: 0.8rem;
+    color: var(--gold-light);
+    margin-top: 0.25rem;
+    font-style: italic;
+  }
+
+  .player-list {
+    padding: 1.2rem;
+    list-style: none;
+  }
+
+  .player-item {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.6rem 0.5rem;
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+  }
+
+  .player-item:last-child { border-bottom: none; }
+
+  .player-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--gold);
+    opacity: 0.5;
+    flex-shrink: 0;
+  }
+
+  .player-name {
+    font-size: 1rem;
+    color: var(--cream);
+  }
+
+  .tbd-player {
+    opacity: 0.35;
+    font-style: italic;
+    font-size: 0.85rem;
+  }
+
+  /* POOL */
+  .pool-box {
+    background: linear-gradient(135deg, rgba(26,58,42,0.4), rgba(10,15,13,0.7));
+    border: 1px solid rgba(201,168,76,0.2);
+    border-radius: 16px;
+    padding: 2.5rem;
+    text-align: center;
+    max-width: 500px;
+    margin: 0 auto;
+  }
+
+  .pool-amount {
+    font-family: 'Playfair Display', serif;
+    font-size: 4rem;
+    color: var(--gold);
+    text-shadow: 0 0 40px rgba(201,168,76,0.4);
+  }
+
+  .pool-label {
+    font-size: 0.8rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--text);
+    opacity: 0.6;
+    margin-top: 0.25rem;
+  }
+
+  .pool-note {
+    margin-top: 1.5rem;
+    font-size: 0.9rem;
+    color: var(--text);
+    opacity: 0.6;
+    line-height: 1.6;
+  }
+
+  /* PLAYERS POOL */
+  .players-pool {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    justify-content: center;
+    margin-bottom: 2rem;
+  }
+
+  .player-chip {
+    background: rgba(26,58,42,0.6);
+    border: 1px solid rgba(201,168,76,0.25);
+    color: var(--cream);
+    font-size: 0.9rem;
+    padding: 0.5rem 1.1rem;
+    border-radius: 30px;
+    transition: all 0.2s;
+  }
+
+  .player-chip:hover {
+    background: rgba(201,168,76,0.15);
+    border-color: rgba(201,168,76,0.5);
+  }
+
+  /* FOOTER */
+  footer {
+    text-align: center;
+    padding: 3rem 1.5rem;
+    border-top: 1px solid rgba(201,168,76,0.1);
+    font-size: 0.75rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gold);
+    opacity: 0.5;
+  }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="trophy-icon">🏆</div>
+  <div class="hero-eyebrow">Indoor Golf Simulator Invitational</div>
+  <h1 class="hero-title">The Captain's <span>Cup</span></h1>
+  <p class="hero-subtitle">Eight Shall Enter. One Team Shall Reign.</p>
+  <div class="divider"></div>
+  <div class="hero-details">
+    <div class="detail-item">
+      <span class="detail-label">Date</span>
+      <span class="detail-value">March 21, 2026</span>
+    </div>
+    <div class="detail-item">
+      <span class="detail-label">Tee Time</span>
+      <span class="detail-value">1:00 – 3:00 PM</span>
+    </div>
+    <div class="detail-item">
+      <span class="detail-label">Format</span>
+      <span class="detail-value">2 Teams of 4</span>
+    </div>
+    <div class="detail-item">
+      <span class="detail-label">Buy-In</span>
+      <span class="detail-value">$40 / Player</span>
+    </div>
+  </div>
+  <div class="scroll-hint">▼ scroll</div>
+</div>
+
+<!-- FORMAT -->
+<section>
+  <div class="section-title">Tournament <span>Format</span></div>
+  <div class="section-sub">27 Holes · 3 Rounds · 9 Holes Each</div>
+
+  <div class="rounds-grid">
+    <div class="round-card">
+      <div class="round-num">Round 1</div>
+      <div class="round-name">TBD</div>
+      <div class="round-holes">9 Holes</div>
+      <span class="tbd-badge">Format TBD</span>
+      <span class="tbd-badge" style="margin-top:0.5rem;">Course TBD</span>
+    </div>
+    <div class="round-card">
+      <div class="round-num">Round 2</div>
+      <div class="round-name">TBD</div>
+      <div class="round-holes">9 Holes</div>
+      <span class="tbd-badge">Format TBD</span>
+      <span class="tbd-badge" style="margin-top:0.5rem;">Course TBD</span>
+    </div>
+    <div class="round-card">
+      <div class="round-num">Round 3</div>
+      <div class="round-name">TBD</div>
+      <div class="round-holes">9 Holes</div>
+      <span class="tbd-badge">Format TBD</span>
+      <span class="tbd-badge" style="margin-top:0.5rem;">Course TBD</span>
+    </div>
+  </div>
+
+  <p style="text-align:center; margin-top:2rem; font-size:0.85rem; opacity:0.5; line-height:1.8;">
+    Formats under consideration: 2-Person Scramble · 2-Person Alt Shot · 2-Person Best Ball · 4-Person Best Ball · 4-Person Alt Shot
+  </p>
+</section>
+
+<!-- TEAMS -->
+<section>
+  <div class="section-title">The <span>Teams</span></div>
+  <div class="section-sub">Captains Draft · Teams TBD</div>
+
+  <div class="players-pool">
+    <div class="player-chip">Matt</div>
+    <div class="player-chip">Jordan</div>
+    <div class="player-chip">Nate</div>
+    <div class="player-chip">Trent</div>
+    <div class="player-chip">Tom</div>
+    <div class="player-chip">David</div>
+    <div class="player-chip">Mason</div>
+    <div class="player-chip">Al</div>
+  </div>
+
+  <div class="teams-container">
+    <div class="team-card">
+      <div class="team-header">
+        <div class="team-label">Team</div>
+        <div class="team-name">Team A</div>
+        <div class="team-captain">Captain: TBD</div>
+      </div>
+      <ul class="player-list">
+        <li class="player-item"><span class="player-dot"></span><span class="player-name tbd-player">Draft Pick 1</span></li>
+        <li class="player-item"><span class="player-dot"></span><span class="player-name tbd-player">Draft Pick 2</span></li>
+        <li class="player-item"><span class="player-dot"></span><span class="player-name tbd-player">Draft Pick 3</span></li>
+        <li class="player-item"><span class="player-dot"></span><span class="player-name tbd-player">Draft Pick 4</span></li>
+      </ul>
+    </div>
+    <div class="team-card">
+      <div class="team-header">
+        <div class="team-label">Team</div>
+        <div class="team-name">Team B</div>
+        <div class="team-captain">Captain: TBD</div>
+      </div>
+      <ul class="player-list">
+        <li class="player-item"><span class="player-dot"></span><span class="player-name tbd-player">Draft Pick 1</span></li>
+        <li class="player-item"><span class="player-dot"></span><span class="player-name tbd-player">Draft Pick 2</span></li>
+        <li class="player-item"><span class="player-dot"></span><span class="player-name tbd-player">Draft Pick 3</span></li>
+        <li class="player-item"><span class="player-dot"></span><span class="player-name tbd-player">Draft Pick 4</span></li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- PRIZE -->
+<section>
+  <div class="section-title">The <span>Prize Pool</span></div>
+  <div class="section-sub">Glory & Cold Hard Cash</div>
+
+  <div class="pool-box">
+    <div class="pool-amount">~$200</div>
+    <div class="pool-label">Estimated Cash Prize Pool</div>
+    <div class="pool-note">
+      8 players · $40 buy-in each<br>
+      Cash prize for the winning team, plus every competitor takes home an exclusive Captain's Cup souvenir to remember the glory — or the heartbreak.
+    </div>
+  </div>
+</section>
+
+<footer>
+  The Captain's Cup &nbsp;·&nbsp; March 21, 2026 &nbsp;·&nbsp; Indoor Golf Simulator
+</footer>
+
+</body>
+</html>
